@@ -9,7 +9,7 @@ class PostLocalNoteUseCase @Inject constructor(
     private val noteRepository: NoteRepository,
     private val uiToDomainMapper: UiToDomainMapper
 ) {
-    suspend fun postLocalNote(localNoteVO: LocalNoteVO): Boolean {
+    suspend fun postLocalNote(localNoteVO: LocalNoteVO): Result<Boolean> {
         return try {
             val localNote = uiToDomainMapper.run { localNoteVO.toDomain() }
             noteRepository.postLocalNote(localNote)

@@ -1,7 +1,6 @@
 package com.together.ui.main_screen
 
 import androidx.lifecycle.ViewModel
-import com.together.data.repository.courses.FakeCourseRepositoryImpl
 import com.together.domain.usecase.courses.get_courses.GetLastCoursesUseCase
 import com.together.domain.usecase.notes.get_community_notes.GetCommunityLastNoteUseCase
 import com.together.domain.usecase.notes.get_local_notes.GetLocalLastNoteUseCase

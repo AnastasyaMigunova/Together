@@ -8,7 +8,7 @@ import com.together.ui.models.CourseVO
 import javax.inject.Inject
 
 class GetCoursesUseCase @Inject constructor(
-    private val courseRepository: CourseRepository = FakeCourseRepositoryImpl(),
+    private val courseRepository: CourseRepository,
     private val domainToUiMapper: DomainToUiMapper
 ) {
     suspend fun getCourses(): List<CourseVO> {

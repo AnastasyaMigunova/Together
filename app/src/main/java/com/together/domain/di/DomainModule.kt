@@ -2,6 +2,8 @@ package com.together.domain.di
 
 import com.together.data.repository.auth.AuthRepositoryImpl
 import com.together.data.repository.courses.CourseRepositoryImpl
+import com.together.data.repository.courses.FakeCourseRepositoryImpl
+import com.together.data.repository.notes.FakeNoteRepositoryImpl
 import com.together.data.repository.notes.NoteRepositoryImpl
 import com.together.data.repository.profile.ProfileRepositoryImpl
 import com.together.data.repository.register.RegisterRepositoryImpl
@@ -70,7 +72,7 @@ class DomainModule {
         courseRepositoryImpl: CourseRepositoryImpl,
         domainToUiMapper: DomainToUiMapper
     ) : GetLastCoursesUseCase {
-        return GetLastCoursesUseCase(courseRepositoryImpl, domainToUiMapper)
+        return GetLastCoursesUseCase(FakeCourseRepositoryImpl(), domainToUiMapper)
     }
 
     @Provides
@@ -86,7 +88,7 @@ class DomainModule {
         noteRepositoryImpl: NoteRepositoryImpl,
         domainToUiMapper: DomainToUiMapper
     ) : GetCommunityLastNoteUseCase {
-        return GetCommunityLastNoteUseCase(noteRepositoryImpl, domainToUiMapper)
+        return GetCommunityLastNoteUseCase(FakeNoteRepositoryImpl(), domainToUiMapper)
     }
 
     @Provides
@@ -102,7 +104,7 @@ class DomainModule {
         noteRepositoryImpl: NoteRepositoryImpl,
         domainToUiMapper: DomainToUiMapper
     ) : GetLocalLastNoteUseCase {
-        return GetLocalLastNoteUseCase(noteRepositoryImpl, domainToUiMapper)
+        return GetLocalLastNoteUseCase(FakeNoteRepositoryImpl(), domainToUiMapper)
     }
 
     @Provides

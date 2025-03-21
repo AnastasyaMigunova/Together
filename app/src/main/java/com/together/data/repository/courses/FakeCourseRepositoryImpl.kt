@@ -14,7 +14,7 @@ class FakeCourseRepositoryImpl @Inject constructor(
                     id = "1",
                     title = "Jetpack Compose Basics",
                     description = "Learn the fundamentals of Jetpack Compose.",
-                    tags = listOf("Android", "Jetpack", "UI"),
+                    tags = listOf("Android", "Jetpack", "UI", "Android Studio", "Composable"),
                     textSections = listOf(
                         Text(image = "", text = "Introduction to Compose"),
                         Text(image = "", text = "Composable functions"),
@@ -36,7 +36,7 @@ class FakeCourseRepositoryImpl @Inject constructor(
                     id = "3",
                     title = "Android Architecture Components",
                     description = "Build scalable Android apps using best practices.",
-                    tags = listOf("Android", "Architecture", "MVVM"),
+                    tags = listOf("Android", "Architecture", "MVVM", "MVP", "MVC", "UI"),
                     textSections = listOf(
                         Text(image = "", text = "ViewModel & LiveData"),
                         Text(image = "", text = "Room Database"),
@@ -76,23 +76,4 @@ class FakeCourseRepositoryImpl @Inject constructor(
     override suspend fun getCourseById(courseId: String): Result<Course> {
         TODO("Not yet implemented")
     }
-
-//    override suspend fun postCourse(course: Course): Course {
-//        return try {
-//            val postCourseRequestDTO = domainToDataMapper.run { course.toData() }
-//            val response = apiService.postCourse(postCourseRequestDTO)
-//            dataToDomainMapper.run { response.toDomain() }
-//        } catch (e: Exception) {
-//            throw Exception("Post courses error: ${e.message}", e)
-//        }
-//    }
-//
-//    override suspend fun getCourseById(courseId: String): Course {
-//        return try {
-//            val response = apiService.getCourseById(courseId)
-//            dataToDomainMapper.run { response.toDomain() }
-//        } catch (e: Exception) {
-//            throw Exception("Get course by id error: ${e.message}", e)
-//        }
-//    }
 }

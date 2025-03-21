@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +23,7 @@ fun CustomCourseCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .height(160.dp)
             .background(
                 LocalCustomColors.current.backgroundYellow,
                 RoundedCornerShape(8.dp)
@@ -31,7 +33,7 @@ fun CustomCourseCard(
     ) {
         CustomTitle(
             modifier = Modifier
-                .width(240.dp),
+                .width(280.dp),
             text = title
         )
 

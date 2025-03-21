@@ -12,13 +12,16 @@ class PostCourseUseCase @Inject constructor(
     private val uiToDomainMapper: UiToDomainMapper,
     private val domainToUiMapper: DomainToUiMapper
 ) {
-    suspend fun postCourse(courseVO: CourseVO): CourseVO {
+    suspend fun postCourse(courseVO: CourseVO): CourseVO? {
         val course = uiToDomainMapper.run { courseVO.toDomain() }
 
         return courseRepository.postCourse(course)
             .fold(
-                onSuccess = { courseVO -> domainToUiMapper.run { courseVO.toViewObject() }  },
-                onFailure = { Log.e("PostCourseUseCase", "Ошибка при публикации курса: ${it.message}") }
+                onSuccess = { domainToUiMapper.run { it.toViewObject() } },
+                onFailure = {
+                    Log.e("PostCourseUseCase", "Ошибка при публикации курса: ${it.message}", it)
+                    throw it
+                }
             )
     }
 }
