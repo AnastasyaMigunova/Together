@@ -1,8 +1,5 @@
 package com.together.data.repository.notes
 
-import com.together.data.mapper.DataToDomainMapper
-import com.together.data.mapper.DomainToDataMapper
-import com.together.data.storage.room.dao.LocalNoteDao
 import com.together.domain.models.Author
 import com.together.domain.models.Comments
 import com.together.domain.models.CommunityNote
@@ -107,7 +104,40 @@ class FakeNoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getLocalNotes(): Result<List<LocalNote>> {
-        TODO("Not yet implemented")
+        return Result.success(
+            listOf(
+                LocalNote(
+                    id = "1",
+                    title = "Первая заметка",
+                    content = listOf(
+                        Content(image = "", text = "Содержание первой заметки"),
+                        Content(image = "", text = "Дополнительный текст")
+                    ),
+                    date = "2025-03-24T10:00:00Z",
+                    isFavourite = true
+                ),
+                LocalNote(
+                    id = "2",
+                    title = "Вторая заметка",
+                    content = listOf(
+                        Content(image = "", text = "Описание второй заметки"),
+                        Content(image = "", text = "Ещё один абзац")
+                    ),
+                    date = "2025-03-23T15:30:00Z",
+                    isFavourite = false
+                ),
+                LocalNote(
+                    id = "3",
+                    title = "Третья заметка",
+                    content = listOf(
+                        Content(image = "", text = "Контент третьей заметки"),
+                        Content(image = "", text = "Доп. информация")
+                    ),
+                    date = "2025-03-22T08:45:00Z",
+                    isFavourite = true
+                )
+            )
+        )
     }
 
     override suspend fun postLocalNote(localNote: LocalNote): Result<Boolean> {
@@ -117,44 +147,4 @@ class FakeNoteRepositoryImpl @Inject constructor(
     override suspend fun getFavLocalNotes(): Result<List<LocalNote>> {
         TODO("Not yet implemented")
     }
-
-//    override suspend fun getLastLocalNote(): LocalNote? {
-//        return try {
-//            val response = localNoteDao.getLastLocalNote()
-//            dataToDomainMapper.run { response?.toDomain() }
-//        } catch (e: Exception) {
-//            throw Exception("Get last local note error: ${e.message}", e)
-//        }
-//    }
-//
-//    override suspend fun getLocalNotes(): List<LocalNote> {
-//        return try {
-//            val localNotes = localNoteDao.getLocalNotes()
-//            dataToDomainMapper.run { localNotes.toDomain() }
-//        } catch (e: Exception) {
-//            throw Exception("Get local notes error: ${e.message}", e)
-//        }
-//    }
-//
-//    override suspend fun postLocalNote(localNote: LocalNote): Boolean {
-//        return try {
-//            val localNoteEntity = domainToDataMapper.run { localNote.toData() }
-//            localNoteDao.insertNote(localNoteEntity.localNote)
-//            localNoteEntity.content.forEach { contentEntity ->
-//                localNoteDao.insertContent(contentEntity)
-//            }
-//            true
-//        } catch (e: Exception) {
-//            throw Exception("Post local note error: ${e.message}", e)
-//        }
-//    }
-//
-//    override suspend fun getFavLocalNotes(): List<LocalNote> {
-//        return try {
-//            val localNotes = localNoteDao.getFavouriteLocalNotes()
-//            dataToDomainMapper.run { localNotes.toDomain() }
-//        } catch (e: Exception) {
-//            throw Exception("Get favourite local notes error: ${e.message}", e)
-//        }
-//    }
 }
