@@ -1,7 +1,9 @@
 package com.together.domain.di
 
-import com.together.data.repository.auth.AuthRepositoryImpl
+import com.together.data.repository.auth.FakeAuthRepositoryImpl
 import com.together.data.repository.courses.CourseRepositoryImpl
+import com.together.data.repository.courses.FakeCourseRepositoryImpl
+import com.together.data.repository.notes.FakeNoteRepositoryImpl
 import com.together.data.repository.notes.NoteRepositoryImpl
 import com.together.data.repository.profile.ProfileRepositoryImpl
 import com.together.data.repository.register.RegisterRepositoryImpl
@@ -31,7 +33,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 class DomainModule {
     @Provides
-    fun provideAuthUseCase(authRepositoryImpl: AuthRepositoryImpl): AuthUseCase {
+    fun provideAuthUseCase(authRepositoryImpl: FakeAuthRepositoryImpl): AuthUseCase {
         return AuthUseCase(authRepositoryImpl)
     }
 
@@ -42,7 +44,7 @@ class DomainModule {
 
     @Provides
     fun provideGetCoursesUseCase(
-        courseRepositoryImpl: CourseRepositoryImpl,
+        courseRepositoryImpl: FakeCourseRepositoryImpl,
         domainToUiMapper: DomainToUiMapper
     ): GetCoursesUseCase {
         return GetCoursesUseCase(courseRepositoryImpl, domainToUiMapper)
@@ -67,7 +69,7 @@ class DomainModule {
 
     @Provides
     fun provideGetLastCoursesUseCase(
-        courseRepositoryImpl: CourseRepositoryImpl,
+        courseRepositoryImpl: FakeCourseRepositoryImpl,
         domainToUiMapper: DomainToUiMapper
     ) : GetLastCoursesUseCase {
         return GetLastCoursesUseCase(courseRepositoryImpl, domainToUiMapper)
@@ -75,7 +77,7 @@ class DomainModule {
 
     @Provides
     fun provideGetCommunityNotesUseCase(
-        noteRepositoryImpl: NoteRepositoryImpl,
+        noteRepositoryImpl: FakeNoteRepositoryImpl,
         domainToUiMapper: DomainToUiMapper
     ) : GetCommunityNotesUseCase {
         return GetCommunityNotesUseCase(noteRepositoryImpl, domainToUiMapper)
@@ -83,7 +85,7 @@ class DomainModule {
 
     @Provides
     fun provideGetCommunityLastNoteUseCase(
-        noteRepositoryImpl: NoteRepositoryImpl,
+        noteRepositoryImpl: FakeNoteRepositoryImpl,
         domainToUiMapper: DomainToUiMapper
     ) : GetCommunityLastNoteUseCase {
         return GetCommunityLastNoteUseCase(noteRepositoryImpl, domainToUiMapper)
@@ -91,7 +93,7 @@ class DomainModule {
 
     @Provides
     fun provideGetLocalNotesUseCase(
-        noteRepositoryImpl: NoteRepositoryImpl,
+        noteRepositoryImpl: FakeNoteRepositoryImpl,
         domainToUiMapper: DomainToUiMapper
     ) : GetLocalNotesUseCase {
         return GetLocalNotesUseCase(noteRepositoryImpl, domainToUiMapper)
@@ -99,7 +101,7 @@ class DomainModule {
 
     @Provides
     fun provideGetLocalLastNoteUseCase(
-        noteRepositoryImpl: NoteRepositoryImpl,
+        noteRepositoryImpl: FakeNoteRepositoryImpl,
         domainToUiMapper: DomainToUiMapper
     ) : GetLocalLastNoteUseCase {
         return GetLocalLastNoteUseCase(noteRepositoryImpl, domainToUiMapper)

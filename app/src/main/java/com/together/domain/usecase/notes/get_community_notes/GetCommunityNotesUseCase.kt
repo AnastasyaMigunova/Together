@@ -8,7 +8,7 @@ import com.together.ui.models.CommunityNoteVO
 import javax.inject.Inject
 
 class GetCommunityNotesUseCase @Inject constructor(
-    private val noteRepository: NoteRepository = FakeNoteRepositoryImpl(),
+    private val noteRepository: NoteRepository,
     private val domainToUiMapper: DomainToUiMapper
 ) {
     suspend fun getAllCommunityNotes(): List<CommunityNoteVO> {

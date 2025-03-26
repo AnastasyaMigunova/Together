@@ -12,7 +12,7 @@ class PostCourseUseCase @Inject constructor(
     private val uiToDomainMapper: UiToDomainMapper,
     private val domainToUiMapper: DomainToUiMapper
 ) {
-    suspend fun postCourse(courseVO: CourseVO): CourseVO {
+    suspend fun postCourse(courseVO: CourseVO): CourseVO? {
         val course = uiToDomainMapper.run { courseVO.toDomain() }
 
         return courseRepository.postCourse(course)
