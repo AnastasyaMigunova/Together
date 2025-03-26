@@ -1,4 +1,4 @@
-package com.together.ui.components.error
+package com.together.ui.error_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,6 @@ import com.together.R
 import com.together.ui.components.CustomButton
 import com.together.ui.components.CustomDescription
 import com.together.ui.components.CustomImage
-import com.together.ui.theme.CustomColors
 import com.together.ui.theme.LocalCustomColors
 import com.together.ui.theme.LocalCustomTypography
 

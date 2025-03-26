@@ -10,27 +10,26 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.together.ui.components.CustomBottomBar
-import com.together.ui.components.CustomTopBar
-import com.together.ui.components.FAVOURITES_TAB
-import com.together.ui.components.HOME_TAB
-import com.together.ui.components.PROFILE_TAB
-import com.together.ui.navigation.NavHost
-import com.together.ui.navigation.SPLASH_SCREEN_ROUTE
-import com.together.ui.navigation.controllers.navigateToFavouritesTab
-import com.together.ui.navigation.controllers.navigateToHomeTab
-import com.together.ui.navigation.controllers.navigateToProfileTab
+import com.together.ui.main_screen.MainScreen
+import com.together.ui.navigation.NavGraph
+import com.together.ui.navigation.NavigationItem
+import com.together.ui.navigation.Screen
+import com.together.ui.register_screen.RegisterScreen
+import com.together.ui.splash_screen.SplashScreen
 import com.together.ui.theme.TogetherTheme
-import com.together.ui.topBarParams.TopBarParams
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,72 +41,81 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             TogetherTheme {
-                val isBottomBarVisible = remember { mutableStateOf(false) }
-                val topBarParams = remember {
-                    mutableStateOf(
-                        TopBarParams(
-                            title = R.string.main_title,
-                            iconId = R.drawable.ic_search,
-                            height = 60.dp,
-                            titleItemDetails = null,
-                            courseDescription = null,
-                            noteDate = null,
-                            visibility = false,
-                            onBackClick = null
-                        )
-                    )
-                }
-                val selectedTab = rememberSaveable { mutableIntStateOf(HOME_TAB) }
+                val isBottomBarVisible = remember { mutableStateOf(true) }
                 val navController = rememberNavController()
 
                 Scaffold(
-                    topBar = {
-                        AnimatedVisibility(
-                            visible = topBarParams.value.visibility,
-                            enter = fadeIn() + expandVertically(),
-                            exit = fadeOut() + shrinkVertically(),
-                        ) {
-                            CustomTopBar(
-                                textId = topBarParams.value.title,
-                                iconId = topBarParams.value.iconId,
-                                height = topBarParams.value.height,
-                                onBackClick = topBarParams.value.onBackClick
-                            ) {}
-                        }
-                    },
+                    containerColor = Color.Transparent,
+                    modifier = Modifier
+                        .padding(
+                            bottom = WindowInsets.navigationBars.asPaddingValues()
+                                .calculateBottomPadding()
+                        ),
                     bottomBar = {
+                        val navBackStackEntry by navController.currentBackStackEntryAsState()
+                        val currentRoute = navBackStackEntry?.destination?.route
+
+                        val items = listOf(
+                            NavigationItem.Main,
+                            NavigationItem.FavouritesNotes,
+                            NavigationItem.AddNote,
+                            NavigationItem.Chats,
+                            NavigationItem.Profile
+                        )
+
                         AnimatedVisibility(
                             visible = isBottomBarVisible.value,
                             enter = fadeIn() + expandVertically(),
                             exit = fadeOut() + shrinkVertically(),
                         ) {
                             CustomBottomBar(
-                                selectedTab = selectedTab.intValue
-                            ) { tab ->
-                                selectedTab.intValue = tab
-                                when (tab) {
-                                    HOME_TAB -> {
-                                        navController.navigateToHomeTab()
+                                items = items,
+                                selected = { navItem ->
+                                    currentRoute == navItem.screen.route
+                                }
+                            ) {
+                                navController.navigate(it.screen.route) {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
                                     }
-
-                                    FAVOURITES_TAB -> {
-                                        navController.navigateToFavouritesTab()
-                                    }
-
-                                    PROFILE_TAB -> {
-                                        navController.navigateToProfileTab()
-                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
                             }
                         }
                     }
                 ) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        NavHost(
-                            navController = navController,
-                            startDestination = SPLASH_SCREEN_ROUTE,
-                            topBarParams = topBarParams,
-                            setBottomBarVisibility = { isBottomBarVisible.value = it }
+                        NavGraph(
+                            navHostController = navController,
+                            splashScreenContent = {
+                                SplashScreen(
+                                    navigateToAuth = { navController.navigate(Screen.AuthScreen.route) },
+                                    navigateToMain = { navController.navigate(Screen.MainScreen.route) }
+                                )
+                            },
+                            registerScreenContent = {
+                                RegisterScreen(
+                                    navigateToAuth = { navController.navigate(Screen.AuthScreen.route) },
+                                    navigateToMain = { navController.navigate(Screen.MainScreen.route) },
+                                )
+                            },
+                            authScreenContent = {
+                                RegisterScreen(
+                                    navigateToAuth = { navController.navigate(Screen.AuthScreen.route) },
+                                    navigateToMain = { navController.navigate(Screen.MainScreen.route) }
+                                )
+                            },
+                            mainScreenContent = {
+                                MainScreen(
+                                    navigateToError = { navController.navigate(Screen.ErrorScreen.route) },
+                                    navigateToAllItems = {  }
+                                )
+                            },
+                            favouritesScreenContent = { },
+                            addNoteScreenContent = { },
+                            chatsScreenContent = { },
+                            profileScreenContent = { }
                         )
                     }
                 }

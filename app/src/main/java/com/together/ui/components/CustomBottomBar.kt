@@ -22,72 +22,56 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.together.R
+import com.together.ui.navigation.NavigationItem
 import com.together.ui.theme.LocalCustomColors
 
-const val HOME_TAB = 0
-const val FAVOURITES_TAB = 1
-const val PROFILE_TAB = 3
 
 @Composable
 fun CustomBottomBar(
     modifier: Modifier = Modifier,
-    selectedTab: Int,
-    onTabClick: (pos: Int) -> Unit
+    items: List<NavigationItem>,
+    selected: (NavigationItem) -> Boolean,
+    onClick: (NavigationItem) -> Unit
 ) {
-    val colorsContext = LocalCustomColors.current
+    val customColors = LocalCustomColors.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.White)
             .drawBehind {
-                val strokeWidth = 1.dp.toPx()
+                val strokeWidth = 2.dp.toPx()
                 val y = 0f
                 drawLine(
-                    color = colorsContext.backgroundInputField,
+                    color = customColors.backgroundGray,
                     start = Offset(0f, y),
                     end = Offset(size.width, y),
                     strokeWidth = strokeWidth
                 )
             }
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = 8.dp, horizontal = 30.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        BottomNavigationIcon(
-            iconId = R.drawable.ic_home,
-            selected = selectedTab == HOME_TAB
-        ) { onTabClick(HOME_TAB) }
-        BottomNavigationIcon(
-            iconId = R.drawable.ic_favourites,
-            selected = selectedTab == FAVOURITES_TAB
-        ) { onTabClick(FAVOURITES_TAB) }
-        BottomNavigationIcon(
-            iconId = R.drawable.ic_adding_note,
-            selected = false
-        ) {}
-        BottomNavigationIcon(
-            iconId = R.drawable.ic_chats,
-            selected = false
-        ) {}
-        BottomNavigationIcon(
-            iconId = R.drawable.ic_profile,
-            selected = selectedTab == PROFILE_TAB
-        ) { onTabClick(PROFILE_TAB) }
+        items.forEach { item ->
+            BottomNavigationIcon(
+                iconId = item.iconId,
+                isSelected = selected(item)
+            ) { onClick(item) }
+        }
     }
 }
 
 @Composable
 fun BottomNavigationIcon(
-    modifier: Modifier = Modifier,
     @DrawableRes iconId: Int,
-    selected: Boolean,
+    isSelected: Boolean,
     onClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .size(height = 40.dp, width = 62.dp)
             .background(
-                color = if (selected) LocalCustomColors.current.backgroundInputField else Color.Transparent,
+                color = if (isSelected) LocalCustomColors.current.backgroundInputField else Color.Transparent,
                 shape = RoundedCornerShape(32.dp)
             ),
         contentAlignment = Alignment.Center

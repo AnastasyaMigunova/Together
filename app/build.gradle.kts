@@ -106,6 +106,9 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.8.3")
+
     implementation("androidx.core:core-splashscreen:1.0.1")
 
 }

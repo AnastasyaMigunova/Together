@@ -38,6 +38,10 @@ class FakeNoteRepositoryImpl @Inject constructor(
                     title = "Советы по Jetpack Compose",
                     content = listOf(
                         Content(image = "", text = "Используйте remember для сохранения состояния."),
+                        Content(
+                            image = "",
+                            text = "Используйте remember для сохранения состояния."
+                        ),
                         Content(image = "", text = "Старайтесь минимизировать recomposition.")
                     ),
                     author = Author(
@@ -66,6 +70,10 @@ class FakeNoteRepositoryImpl @Inject constructor(
                     title = "Как работать с корутинами",
                     content = listOf(
                         Content(image = "", text = "Используйте viewModelScope для управления корутинами."),
+                        Content(
+                            image = "",
+                            text = "Используйте viewModelScope для управления корутинами."
+                        ),
                         Content(image = "", text = "Не забывайте обрабатывать исключения.")
                     ),
                     author = Author(

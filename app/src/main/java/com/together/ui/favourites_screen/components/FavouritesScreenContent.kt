@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.together.R
 import com.together.ui.components.CustomLocalNoteCard
-import com.together.ui.components.error.ErrorScreen
+import com.together.ui.error_screen.ErrorScreen
 import com.together.ui.favourites_screen.FavouritesState
 import com.together.ui.models.LocalNoteVO
 import com.together.ui.theme.LocalCustomColors

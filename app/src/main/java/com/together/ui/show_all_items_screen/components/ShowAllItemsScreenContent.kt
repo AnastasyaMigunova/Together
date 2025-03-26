@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.together.ui.components.CustomCommunityNoteCard
 import com.together.ui.components.CustomCourseCard
 import com.together.ui.components.CustomLocalNoteCard
-import com.together.ui.components.error.ErrorScreen
+import com.together.ui.error_screen.ErrorScreen
 import com.together.ui.models.CommunityNoteVO
 import com.together.ui.models.CourseVO
 import com.together.ui.models.LocalNoteVO
