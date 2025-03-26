@@ -17,8 +17,11 @@ class PostCourseUseCase @Inject constructor(
 
         return courseRepository.postCourse(course)
             .fold(
-                onSuccess = { courseVO -> domainToUiMapper.run { courseVO.toViewObject() }  },
-                onFailure = { Log.e("PostCourseUseCase", "Ошибка при публикации курса: ${it.message}") }
+                onSuccess = { courseVO -> domainToUiMapper.run { courseVO.toViewObject() } },
+                onFailure = { error ->
+                    Log.e("PostCourseUseCase", "Ошибка при публикации курса: ${error.message}")
+                    throw error
+                }
             )
     }
 }
