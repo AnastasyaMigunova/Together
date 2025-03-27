@@ -12,6 +12,7 @@ import com.together.data.repository.auth.FakeAuthRepositoryImpl
 import com.together.data.repository.register.RegisterRepositoryImpl
 import com.together.data.repository.courses.FakeCourseRepositoryImpl
 import com.together.data.repository.notes.FakeNoteRepositoryImpl
+import com.together.data.repository.profile.FakeProfileRepositoryImpl
 import com.together.data.repository.register.FakeRegisterRepositoryImpl
 import com.together.data.storage.preferences.PreferencesManager
 import com.together.data.storage.preferences.TokenManager
@@ -85,8 +86,11 @@ class DataModule {
     }
 
     @Provides
-    fun provideFakeNoteRepository(): NoteRepository {
-        return FakeNoteRepositoryImpl()
+    fun provideFakeNoteRepository(
+        noteDao: LocalNoteDao,
+        dataToDomainMapper: DataToDomainMapper
+    ): NoteRepository {
+        return FakeNoteRepositoryImpl(noteDao, dataToDomainMapper)
     }
 
     @Provides
@@ -95,6 +99,11 @@ class DataModule {
         dataToDomainMapper: DataToDomainMapper
     ): ProfileRepository {
         return ProfileRepositoryImpl(apiService, dataToDomainMapper)
+    }
+
+    @Provides
+    fun provideFakeProfileRepository(): ProfileRepository {
+        return FakeProfileRepositoryImpl()
     }
 
     @Provides

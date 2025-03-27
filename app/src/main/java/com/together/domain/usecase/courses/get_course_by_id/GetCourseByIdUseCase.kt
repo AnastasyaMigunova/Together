@@ -12,10 +12,12 @@ class GetCourseByIdUseCase @Inject constructor(
 ) {
     suspend fun getCourseById(courseId: String): CourseVO {
         return courseRepository.getCourseById(courseId)
-            .mapCatching { course -> domainToUiMapper.run { course.toViewObject() } }
-            .getOrElse { error ->
-                Log.e("GetCourseByIdUseCase", "Ошибка при загрузке курса: ${error.message}")
-                throw error
-            }
+            .fold(
+                onSuccess = { course -> domainToUiMapper.run { course.toViewObject() } },
+                onFailure = { error ->
+                    Log.e("GetCourseByIdUseCase", "Ошибка при загрузке курса: ${error.message}")
+                    throw error
+                }
+            )
     }
 }

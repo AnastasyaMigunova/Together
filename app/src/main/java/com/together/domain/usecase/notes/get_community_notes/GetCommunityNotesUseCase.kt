@@ -13,12 +13,14 @@ class GetCommunityNotesUseCase @Inject constructor(
 ) {
     suspend fun getAllCommunityNotes(): List<CommunityNoteVO> {
         return noteRepository.getCommunityNotes()
-            .mapCatching { notes ->
-                notes.map { note -> domainToUiMapper.run { note.toViewObject() } }
-            }
-            .getOrElse { error ->
-                Log.e("GetCommunityNotesUseCase", "Ошибка при загрузке заметок: ${error.message}")
-                throw error
-            }
+            .fold(
+                onSuccess = { notes ->
+                    notes.map { note -> domainToUiMapper.run { note.toViewObject() } }
+                },
+                onFailure = { error ->
+                    Log.e("GetCommunityNotesUseCase", "Ошибка при загрузке заметок: ${error.message}")
+                    throw error
+                }
+            )
     }
 }

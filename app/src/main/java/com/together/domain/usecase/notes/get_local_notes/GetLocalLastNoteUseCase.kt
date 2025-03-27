@@ -13,15 +13,17 @@ class GetLocalLastNoteUseCase @Inject constructor(
 ) {
     suspend fun getLastLocalNote(): LocalNoteVO {
         return noteRepository.getLastLocalNote()
-            .mapCatching { note ->
-                note.let { domainToUiMapper.run { it.toViewObject() } }
-            }
-            .getOrElse { error ->
-                Log.e(
-                    "GetLocalLastNoteUseCase",
-                    "Ошибка при загрузке последней заметки: ${error.message}"
-                )
-                throw error
-            }
+            .fold(
+                onSuccess = { note ->
+                    note.let { domainToUiMapper.run { it.toViewObject() } }
+                },
+                onFailure = { error ->
+                    Log.e(
+                        "GetLocalLastNoteUseCase",
+                        "Ошибка при загрузке последней заметки: ${error.message}"
+                    )
+                    throw error
+                }
+            )
     }
 }

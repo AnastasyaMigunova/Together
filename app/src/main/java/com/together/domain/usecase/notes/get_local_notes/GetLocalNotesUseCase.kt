@@ -12,15 +12,17 @@ class GetLocalNotesUseCase @Inject constructor(
 ) {
     suspend fun getLocalNotes(): List<LocalNoteVO> {
         return noteRepository.getLocalNotes()
-            .mapCatching { notes ->
-                notes.map { domainToUiMapper.run { it.toViewObject() } }
-            }
-            .getOrElse { error ->
-                Log.e(
-                    "GetLocalNotesUseCase",
-                    "Ошибка при загрузке локальных заметок: ${error.message}"
-                )
-                throw error
-            }
+            .fold(
+                onSuccess = { notes ->
+                    notes.map { domainToUiMapper.run { it.toViewObject() } }
+                },
+                onFailure = { error ->
+                    Log.e(
+                        "GetLocalNotesUseCase",
+                        "Ошибка при загрузке локальных заметок: ${error.message}"
+                    )
+                    throw error
+                }
+            )
     }
 }

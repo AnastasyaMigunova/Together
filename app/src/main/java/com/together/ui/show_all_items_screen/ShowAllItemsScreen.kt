@@ -13,9 +13,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun ShowAllItemsScreen(
     viewModel: ShowItemsViewModel = hiltViewModel(),
-    topBarParams: MutableState<TopBarParams>,
-    type: String,
-    onBackClick: () -> Unit
+    type: String
 ) {
     val state = viewModel.collectAsState().value
 
@@ -25,22 +23,11 @@ fun ShowAllItemsScreen(
 
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
-                is ShowItemsSideEffect.ShowError -> { }
+                is ShowItemsSideEffect.ShowError -> {
+
+                }
             }
         }
-    }
-    
-    LaunchedEffect(key1 = Unit) {
-        topBarParams.value = topBarParams.value.copy(
-            title = when (type) {
-                ListType.COURSE_TYPE -> R.string.all_courses
-                ListType.LOCAL_NOTE_TYPE -> R.string.your_notes
-                ListType.COMMUNITY_NOTE_TYPE -> R.string.community_notes
-                else -> R.string.notes
-            },
-            iconId = R.drawable.ic_search,
-            onBackClick = onBackClick
-        )
     }
 
     ShowAllItemsScreenContent(

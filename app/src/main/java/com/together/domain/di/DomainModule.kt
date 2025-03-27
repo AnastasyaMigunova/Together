@@ -5,6 +5,7 @@ import com.together.data.repository.courses.CourseRepositoryImpl
 import com.together.data.repository.courses.FakeCourseRepositoryImpl
 import com.together.data.repository.notes.FakeNoteRepositoryImpl
 import com.together.data.repository.notes.NoteRepositoryImpl
+import com.together.data.repository.profile.FakeProfileRepositoryImpl
 import com.together.data.repository.profile.ProfileRepositoryImpl
 import com.together.data.repository.register.RegisterRepositoryImpl
 import com.together.data.storage.preferences.TokenManager
@@ -125,7 +126,7 @@ class DomainModule {
 
     @Provides
     fun provideGetProfileUseCase(
-        profileRepositoryImpl: ProfileRepositoryImpl,
+        profileRepositoryImpl: FakeProfileRepositoryImpl,
         domainToUiMapper: DomainToUiMapper
     ): GetProfileUseCase {
         return GetProfileUseCase(profileRepositoryImpl, domainToUiMapper)

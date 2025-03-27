@@ -12,15 +12,17 @@ class GetLocalFavNotesUseCase @Inject constructor(
 ) {
     suspend fun getLocalFavNotes(): List<LocalNoteVO> {
         return noteRepository.getFavLocalNotes()
-            .mapCatching { notes ->
-                notes.map { note -> domainToUiMapper.run { note.toViewObject() } }
-            }
-            .getOrElse { error ->
-                Log.e(
-                    "GetLocalFavNotesUseCase",
-                    "Ошибка при загрузке любимых заметок: ${error.message}"
-                )
-                throw error
-            }
+            .fold(
+                onSuccess = { notes ->
+                    notes.map { note -> domainToUiMapper.run { note.toViewObject() } }
+                },
+                onFailure = { error ->
+                    Log.e(
+                        "GetLocalFavNotesUseCase",
+                        "Ошибка при загрузке любимых заметок: ${error.message}"
+                    )
+                    throw error
+                }
+            )
     }
 }

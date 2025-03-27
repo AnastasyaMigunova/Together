@@ -14,7 +14,6 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun FavouritesScreen(
-    topBarParams: MutableState<TopBarParams>,
     viewModel: FavouritesViewModel = hiltViewModel()
 ) {
 
@@ -30,14 +29,6 @@ fun FavouritesScreen(
                 }
             }
         }
-    }
-    LaunchedEffect(key1 = Unit) {
-        topBarParams.value = topBarParams.value.copy(
-            title = R.string.favourite,
-            iconId = R.drawable.ic_search,
-            height = 60.dp,
-            visibility = true
-        )
     }
 
     FavouritesScreenContent(

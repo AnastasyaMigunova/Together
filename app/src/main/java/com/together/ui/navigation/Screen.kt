@@ -11,9 +11,7 @@ sealed class Screen(
     data object AddNoteScreen: Screen(ROUTE_ADD_NOTE_SCREEN)
     data object ChatsScreen: Screen(ROUTE_CHATS_SCREEN)
     data object ProfileScreen: Screen(ROUTE_PROFILE_SCREEN)
-    data object CoursesScreen: Screen(ROUTE_COURSES_SCREEN)
-    data object LocalNotesScreen: Screen(ROUTE_LOCAL_NOTES_SCREEN)
-    data object CommunityNotesScreen: Screen(ROUTE_COMMUNITY_NOTES_SCREEN)
+    data object AllItemsScreen: Screen(ROUTE_ERROR_SCREEN)
     data object ErrorScreen: Screen(ROUTE_ERROR_SCREEN)
 
     companion object {
@@ -28,6 +26,7 @@ sealed class Screen(
         private const val ROUTE_COURSES_SCREEN = "courses_screen"
         private const val ROUTE_LOCAL_NOTES_SCREEN = "local_notes_screen"
         private const val ROUTE_COMMUNITY_NOTES_SCREEN = "community_notes_screen"
+        private const val ROUTE_ALL_ITEMS_SCREEN = "all_items_screen"
         private const val ROUTE_ERROR_SCREEN = "error_screen"
     }
 }

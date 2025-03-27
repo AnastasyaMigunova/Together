@@ -1,5 +1,8 @@
 package com.together.data.repository.notes
 
+import android.util.Log
+import com.together.data.mapper.DataToDomainMapper
+import com.together.data.storage.room.dao.LocalNoteDao
 import com.together.domain.models.Author
 import com.together.domain.models.Comments
 import com.together.domain.models.CommunityNote
@@ -9,6 +12,8 @@ import com.together.domain.repository.NoteRepository
 import javax.inject.Inject
 
 class FakeNoteRepositoryImpl @Inject constructor(
+    private val localNoteDao: LocalNoteDao,
+    private val dataToDomainMapper: DataToDomainMapper
 ) : NoteRepository {
     override suspend fun getCommunityNotes(): Result<List<CommunityNote>> {
         return Result.success(
@@ -153,6 +158,11 @@ class FakeNoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getFavLocalNotes(): Result<List<LocalNote>> {
-        TODO("Not yet implemented")
+        return runCatching {
+            val localNotes = localNoteDao.getFavouriteLocalNotes()
+            dataToDomainMapper.run { localNotes.toDomain() }
+        }.onFailure {
+            Log.e("NoteRepository", "Get favourite local notes error: ${it.message}")
+        }
     }
 }

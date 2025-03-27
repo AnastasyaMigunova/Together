@@ -1,5 +1,6 @@
 package com.together.domain.usecase.profile
 
+import android.util.Log
 import com.together.domain.mapper.DomainToUiMapper
 import com.together.domain.repository.ProfileRepository
 import com.together.ui.models.ProfileVO
@@ -10,11 +11,16 @@ class GetProfileUseCase @Inject constructor(
     private val domainToUiMapper: DomainToUiMapper
 ) {
     suspend fun getProfile(): ProfileVO {
-        return try {
-            val profile = profileRepository.getProfile()
-            domainToUiMapper.run { profile.toViewObject() }
-        } catch (e: Exception) {
-            throw e
-        }
+        return profileRepository.getProfile()
+            .fold(
+                onSuccess = { profile -> domainToUiMapper.run { profile.toViewObject() } },
+                onFailure = { error ->
+                    Log.e(
+                        "GetProfileUseCase",
+                        "Ошибка при загрузке профиля: ${error.message}"
+                    )
+                    throw error
+                }
+            )
     }
 }

@@ -13,9 +13,8 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun ProfileScreen(
-    topBarParams: MutableState<TopBarParams>,
-    viewModel: ProfileViewModel = hiltViewModel(),
-    navigateToError: () -> Unit
+    navigateToError: () -> Unit,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
 
@@ -30,14 +29,6 @@ fun ProfileScreen(
                 }
             }
         }
-    }
-
-    LaunchedEffect(key1 = Unit) {
-        topBarParams.value = topBarParams.value.copy(
-            title = R.string.profile,
-            iconId = R.drawable.ic_users,
-            height = 60.dp
-        )
     }
 
     ProfileScreenContent(

@@ -75,7 +75,7 @@ fun SuccessLoadingProfile(
     CustomLocalNoteCard(localNoteVO = lastLocalNoteVO)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun PreviewProfileScreenContent() {
     ProfileScreenContent(

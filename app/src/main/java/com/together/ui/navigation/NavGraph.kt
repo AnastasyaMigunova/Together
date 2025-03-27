@@ -21,6 +21,11 @@ fun NavGraph(
     addNoteScreenContent: @Composable () -> Unit,
     chatsScreenContent: @Composable () -> Unit,
     profileScreenContent: @Composable () -> Unit,
+    coursesScreenContent: @Composable () -> Unit,
+    localNotesScreenContent: @Composable () -> Unit,
+    communityNotesScreenContent: @Composable () -> Unit,
+    allItemsScreenContent: @Composable (String) -> Unit,
+    errorScreenContent: @Composable () -> Unit
 ) {
     NavHost(
         navController = navHostController,
@@ -53,6 +58,13 @@ fun NavGraph(
         }
         composable(Screen.ProfileScreen.route) {
             profileScreenContent()
+        }
+        composable("${Screen.AllItemsScreen.route}/{type}") { backStackEntry ->
+            val type = backStackEntry.arguments?.getString("type") ?: ""
+            allItemsScreenContent(type)
+        }
+        composable(Screen.ErrorScreen.route) {
+            errorScreenContent()
         }
     }
 }

@@ -13,17 +13,19 @@ class GetCommunityLastNoteUseCase @Inject constructor(
 ) {
     suspend fun getLastCommunityNote(): CommunityNoteVO {
         return noteRepository.getCommunityNotes()
-            .mapCatching { notes ->
-                notes.maxByOrNull { it.date }
-                    ?.let { domainToUiMapper.run { it.toViewObject() } }
-                    ?: throw NoSuchElementException("Нет доступных записей")
-            }
-            .getOrElse { error ->
-                Log.e(
-                    "GetCommunityLastNoteUseCase",
-                    "Ошибка при загрузке последней заметки: ${error.message}"
-                )
-                throw error
-            }
+            .fold(
+                onSuccess = { notes ->
+                    notes.maxByOrNull { it.date }
+                        ?.let { domainToUiMapper.run { it.toViewObject() } }
+                        ?: throw NoSuchElementException("Нет доступных записей")
+                },
+                onFailure = { error ->
+                    Log.e(
+                        "GetCommunityLastNoteUseCase",
+                        "Ошибка при загрузке последней заметки: ${error.message}"
+                    )
+                    throw error
+                }
+            )
     }
 }

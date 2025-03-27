@@ -23,11 +23,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.together.ui.components.CustomBottomBar
+import com.together.ui.error_screen.ErrorScreen
+import com.together.ui.favourites_screen.FavouritesScreen
 import com.together.ui.main_screen.MainScreen
 import com.together.ui.navigation.NavGraph
 import com.together.ui.navigation.NavigationItem
 import com.together.ui.navigation.Screen
+import com.together.ui.profile_screen.ProfileScreen
 import com.together.ui.register_screen.RegisterScreen
+import com.together.ui.show_all_items_screen.ShowAllItemsScreen
 import com.together.ui.splash_screen.SplashScreen
 import com.together.ui.theme.TogetherTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -109,13 +113,28 @@ class MainActivity : ComponentActivity() {
                             mainScreenContent = {
                                 MainScreen(
                                     navigateToError = { navController.navigate(Screen.ErrorScreen.route) },
-                                    navigateToAllItems = {  }
+                                    navigateToAllItems = { navController.navigate(Screen.AllItemsScreen.route) }
                                 )
                             },
-                            favouritesScreenContent = { },
+                            favouritesScreenContent = {
+                                FavouritesScreen()
+                            },
                             addNoteScreenContent = { },
                             chatsScreenContent = { },
-                            profileScreenContent = { }
+                            profileScreenContent = {
+                                ProfileScreen(
+                                    navigateToError = { navController.navigate(Screen.ErrorScreen.route) }
+                                )
+                             },
+                            coursesScreenContent = { },
+                            localNotesScreenContent = { },
+                            communityNotesScreenContent = { },
+                            allItemsScreenContent = { type ->
+                                navController.navigate("${Screen.AllItemsScreen.route}/$type")
+                            },
+                            errorScreenContent = {
+                                ErrorScreen()
+                            }
                         )
                     }
                 }
