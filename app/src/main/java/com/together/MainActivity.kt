@@ -20,15 +20,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.together.ui.components.CustomBottomBar
+import com.together.ui.course_details_screen.DetailsScreen
 import com.together.ui.error_screen.ErrorScreen
 import com.together.ui.favourites_screen.FavouritesScreen
 import com.together.ui.main_screen.MainScreen
 import com.together.ui.navigation.NavGraph
 import com.together.ui.navigation.NavigationItem
 import com.together.ui.navigation.Screen
+import com.together.ui.navigation.rememberNavigationState
 import com.together.ui.profile_screen.ProfileScreen
 import com.together.ui.register_screen.RegisterScreen
 import com.together.ui.show_all_items_screen.ShowAllItemsScreen
@@ -45,8 +48,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             TogetherTheme {
+                val navigationState = rememberNavigationState()
                 val isBottomBarVisible = remember { mutableStateOf(true) }
-                val navController = rememberNavController()
 
                 Scaffold(
                     containerColor = Color.Transparent,
@@ -56,8 +59,7 @@ class MainActivity : ComponentActivity() {
                                 .calculateBottomPadding()
                         ),
                     bottomBar = {
-                        val navBackStackEntry by navController.currentBackStackEntryAsState()
-                        val currentRoute = navBackStackEntry?.destination?.route
+                        val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
 
                         val items = listOf(
                             NavigationItem.Main,
@@ -75,45 +77,41 @@ class MainActivity : ComponentActivity() {
                             CustomBottomBar(
                                 items = items,
                                 selected = { navItem ->
-                                    currentRoute == navItem.screen.route
+                                    navBackStackEntry?.destination?.hierarchy?.any {
+                                        it.route == navItem.screen.route
+                                    } ?: false
                                 }
                             ) {
-                                navController.navigate(it.screen.route) {
-                                    popUpTo(navController.graph.startDestinationId) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
+                                navigationState.navigateTo(it.screen.route)
                             }
                         }
                     }
                 ) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
                         NavGraph(
-                            navHostController = navController,
+                            navHostController = navigationState.navHostController,
                             splashScreenContent = {
                                 SplashScreen(
-                                    navigateToAuth = { navController.navigate(Screen.AuthScreen.route) },
-                                    navigateToMain = { navController.navigate(Screen.MainScreen.route) }
+                                    navigateToAuth = { navigationState.navigateAndClearTo(Screen.AuthScreen.route) },
+                                    navigateToMain = { navigationState.navigateAndClearTo(Screen.MainScreen.route) }
                                 )
                             },
                             registerScreenContent = {
                                 RegisterScreen(
-                                    navigateToAuth = { navController.navigate(Screen.AuthScreen.route) },
-                                    navigateToMain = { navController.navigate(Screen.MainScreen.route) },
+                                    navigateToAuth = { navigationState.navigateTo(Screen.AuthScreen.route) },
+                                    navigateToMain = { navigationState.navigateAndClearTo(Screen.MainScreen.route) },
                                 )
                             },
                             authScreenContent = {
                                 RegisterScreen(
-                                    navigateToAuth = { navController.navigate(Screen.AuthScreen.route) },
-                                    navigateToMain = { navController.navigate(Screen.MainScreen.route) }
+                                    navigateToAuth = { navigationState.navigateTo(Screen.AuthScreen.route) },
+                                    navigateToMain = { navigationState.navigateAndClearTo(Screen.MainScreen.route) }
                                 )
                             },
                             mainScreenContent = {
                                 MainScreen(
-                                    navigateToError = { navController.navigate(Screen.ErrorScreen.route) },
-                                    navigateToAllItems = { navController.navigate(Screen.AllItemsScreen.route) }
+                                    navigateToError = { navigationState.navigateTo(Screen.ErrorScreen.route) },
+                                    navigateToAllItems = { }
                                 )
                             },
                             favouritesScreenContent = {
@@ -123,14 +121,15 @@ class MainActivity : ComponentActivity() {
                             chatsScreenContent = { },
                             profileScreenContent = {
                                 ProfileScreen(
-                                    navigateToError = { navController.navigate(Screen.ErrorScreen.route) }
+                                    navigateToError = {  }
                                 )
                              },
-                            coursesScreenContent = { },
-                            localNotesScreenContent = { },
-                            communityNotesScreenContent = { },
-                            allItemsScreenContent = { type ->
-                                navController.navigate("${Screen.AllItemsScreen.route}/$type")
+                            allItemsScreenContent = { },
+                            detailsScreenContent = { type, id ->
+                                DetailsScreen(
+                                    type = type,
+                                    id = id
+                                )
                             },
                             errorScreenContent = {
                                 ErrorScreen()

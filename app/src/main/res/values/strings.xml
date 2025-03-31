@@ -37,4 +37,5 @@
     <string name="what_add">Что добавить?</string>
     <string name="add_text">Текст</string>
     <string name="add_image">Ссылка на фото</string>
+    <string name="exit_account">Выйти из аккаунта</string>
 </resources>

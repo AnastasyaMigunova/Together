@@ -26,7 +26,7 @@ import com.together.ui.theme.LocalCustomColors
 import com.together.ui.theme.LocalCustomTypography
 
 @Composable
-fun CourseDetailsScreenContent(
+fun DetailsScreenContent(
     courseVO: CourseVO
 ) {
     val customTypography = LocalCustomTypography.current
@@ -96,8 +96,8 @@ fun BulletPointList(
 
 @Preview
 @Composable
-fun PreviewCourseDetailsScreenContent() {
-    CourseDetailsScreenContent(
+fun PreviewDetailsScreenContent() {
+    DetailsScreenContent(
         courseVO = CourseVO(
             title = "Основы Андроида",
             description = "Краткое описание или большой текст-рыба. Для этого нужно",

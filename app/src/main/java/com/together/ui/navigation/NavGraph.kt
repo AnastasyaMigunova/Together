@@ -21,10 +21,8 @@ fun NavGraph(
     addNoteScreenContent: @Composable () -> Unit,
     chatsScreenContent: @Composable () -> Unit,
     profileScreenContent: @Composable () -> Unit,
-    coursesScreenContent: @Composable () -> Unit,
-    localNotesScreenContent: @Composable () -> Unit,
-    communityNotesScreenContent: @Composable () -> Unit,
-    allItemsScreenContent: @Composable (String) -> Unit,
+    allItemsScreenContent: @Composable (type: String) -> Unit,
+    detailsScreenContent: @Composable (type: String, id: String) -> Unit,
     errorScreenContent: @Composable () -> Unit
 ) {
     NavHost(
@@ -44,25 +42,26 @@ fun NavGraph(
         composable(Screen.AuthScreen.route) {
             authScreenContent()
         }
-        composable(Screen.MainScreen.route) {
-            mainScreenContent()
-        }
-        composable(Screen.FavouritesScreen.route) {
-            favouritesScreenContent()
-        }
-        composable(Screen.AddNoteScreen.route) {
-            addNoteScreenContent()
-        }
-        composable(Screen.ChatsScreen.route) {
-            chatsScreenContent()
-        }
-        composable(Screen.ProfileScreen.route) {
-            profileScreenContent()
-        }
-        composable("${Screen.AllItemsScreen.route}/{type}") { backStackEntry ->
-            val type = backStackEntry.arguments?.getString("type") ?: ""
-            allItemsScreenContent(type)
-        }
+        mainNavGraph(
+            mainScreen = mainScreenContent,
+            showAllItemsScreen = allItemsScreenContent,
+            detailScreen = detailsScreenContent,
+        )
+        favouritesNavGraph(
+            favouriteScreen = favouritesScreenContent,
+            detailsScreen = detailsScreenContent
+        )
+        addNoteNavGraph(
+            addNoteScreen = addNoteScreenContent
+        )
+        chatsNavGraph(
+            chatScreen = chatsScreenContent
+        )
+        profileNavGraph(
+            profileScreen = profileScreenContent,
+            showAllItemsScreen = allItemsScreenContent,
+            detailsScreen = detailsScreenContent
+        )
         composable(Screen.ErrorScreen.route) {
             errorScreenContent()
         }

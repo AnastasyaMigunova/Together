@@ -52,7 +52,7 @@ class ShowItemsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadCourses() = intent {
+    private fun loadCourses() = intent {
         val courses = getCoursesUseCase.getCourses()
         reduce {
             state.copy(
@@ -63,7 +63,7 @@ class ShowItemsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadLocalNotes() = intent {
+    private fun loadLocalNotes() = intent {
         val localNotes = getLocalNotesUseCase.getLocalNotes()
         reduce {
             state.copy(
@@ -74,7 +74,7 @@ class ShowItemsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadCommunityNotes() = intent {
+    private fun loadCommunityNotes() = intent {
         val communityNotes = getCommunityNotesUseCase.getAllCommunityNotes()
         reduce {
             state.copy(
